@@ -54,10 +54,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BlockSelector.cs" />
+    <Compile Include="Assets\Scripts\StayUpright.cs" />
     <Compile Include="Assets\Scripts\BlocksRepo.cs" />
     <Compile Include="Assets\Scripts\BlockPlacer.cs" />
     <Compile Include="Assets\Scripts\MoveAround.cs" />
-    <Compile Include="Assets\Scripts\StayUpright.cs" />
+    <Compile Include="Assets\Scripts\FlagWave.cs" />
+    <Compile Include="Assets\Scripts\Pulsate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

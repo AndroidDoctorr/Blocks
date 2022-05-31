@@ -644,6 +644,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: dc3f55b6e96be2c4485800b5f1ffa57a, type: 2}
   - {fileID: 2100000, guid: 10a0c72c49ab5ab4caeaf39751ee63e5, type: 2}
   - {fileID: 2100000, guid: 96478923d5cc47a479e261be829f8985, type: 2}
+  - {fileID: 2100000, guid: 1cea63deccc13aa458b7a35c0b9cb108, type: 2}
   Shapes:
   - {fileID: 4894750500129438065, guid: 45dd4adbebb54574f85a531da37b219c, type: 3}
   - {fileID: 5184599837587177642, guid: 690f52f8a82ac4c49be7b08cbbd0693a, type: 3}
@@ -659,6 +660,14 @@ MonoBehaviour:
   - {fileID: 6617581953489501955, guid: 7c7edceccc10fc84da93a1fd3d96060f, type: 3}
   - {fileID: 2197686544876281920, guid: 7064e2a2387c9ce4d97e1bbc331f3d1a, type: 3}
   - {fileID: 5436603256978273255, guid: 6dbae17297aac584399a200048d0a628, type: 3}
+  - {fileID: 3799639201567217569, guid: ec6644b5afae7f04badebcdd514d598c, type: 3}
+  - {fileID: 5172828763889049154, guid: a785c71dcf88c874ab42ae3e178c5389, type: 3}
+  - {fileID: 8788861163485202328, guid: 2267da8786adff74cb561f69e74df4f4, type: 3}
+  - {fileID: 7018950396590124345, guid: 3cfb3be50624af346803f2678ebf32f5, type: 3}
+  - {fileID: 327509940665615874, guid: b862fbc3a95cfd4479e37f755629479b, type: 3}
+  - {fileID: 8540786101999087560, guid: d73ae9b453f007940ad86c73b4c9009e, type: 3}
+  - {fileID: 2884549147210371297, guid: cf8da1e2a325c0d48bea0c777546fcd6, type: 3}
+  - {fileID: 9218590329465321858, guid: 503cea09ab9de2b43930f2a9c55631ad, type: 3}
   Effects:
   - {fileID: 4058293355766093469, guid: 3e721db42f079c9449c91397d8581b4a, type: 3}
   - {fileID: 5842022472653343042, guid: e30c28ae96e923e4b9c9694acc65b021, type: 3}
@@ -666,6 +675,8 @@ MonoBehaviour:
   - {fileID: 6583945651729538409, guid: 826f5de3103aaf84b831d306d8210aa0, type: 3}
   - {fileID: 1330759515879366363, guid: 81a3b463e92c6cd439bbc34ef20c0f4c, type: 3}
   - {fileID: 4672416310761271257, guid: 801ed63ef44db6949b7b27522a6eb424, type: 3}
+  - {fileID: 2188950268165071996, guid: 190d3c2b1d6c3e54d91f020d71617345, type: 3}
+  - {fileID: 7203799538669876726, guid: 5398ff242d6d7a44b8c12d3a8d2cbaf7, type: 3}
   SceneryIcons:
   - {fileID: 739312267573451675, guid: 42b4bf7a953f10642aa3ee7a5256cd2d, type: 3}
   RedGhost: {fileID: 911101897}
