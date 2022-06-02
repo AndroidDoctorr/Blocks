@@ -23,6 +23,7 @@ public class BlockPlacer : MonoBehaviour
 
     public SteamVR_Action_Boolean Trigger;
     public SteamVR_Action_Boolean Squeeze;
+    public SteamVR_Action_Boolean SaveButton;
     public GameObject Ghosts;
     public GameObject GreenGhost;
     public GameObject RedGhost;
@@ -45,6 +46,7 @@ public class BlockPlacer : MonoBehaviour
         Selector.onShapeChanged += SelectShape;
         Selector.onMaterialChanged += SelectMaterial;
         Selector.onEffectChanged += (isEffect) => _isEffect = isEffect;
+        SaveButton.onStateDown += SavePlayArea;
 
         _as = GetComponent<AudioSource>();
         _shape = StartShape;
@@ -101,6 +103,11 @@ public class BlockPlacer : MonoBehaviour
             _material ? _material.name : "",
             _x, _y, _z,
             rot.w, rot.x, rot.y, rot.z);
+    }
+    private void SavePlayArea(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    {
+        string playAreaString = _repo.RenderPlayArea();
+        PlayerPrefs.SetString("playArea", playAreaString);
     }
     private void SelectShape(GameObject shape)
     {
