@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Valve.VR;
 
@@ -15,7 +16,6 @@ public class BlockPlacer : MonoBehaviour
     private int _x = 0;
     private int _y = 0;
     private int _z = 0;
-    private float _unit = 0.1f;
     private GameObject _shape;
     private Material _material;
     private bool _isEffect = false;
@@ -24,29 +24,33 @@ public class BlockPlacer : MonoBehaviour
 
     public SteamVR_Action_Boolean Trigger;
     public SteamVR_Action_Boolean Squeeze;
+    public SteamVR_Action_Boolean SaveButton;
     public GameObject Ghosts;
     public GameObject GreenGhost;
     public GameObject RedGhost;
     public BlockSelector Selector;
+    public GameObject Toast;
 
     public GameObject StartShape;
     public Material StartMaterial;
 
+    public static float _unit = 0.1f;
+
     void Start()
     {
-        _repo = new BlocksRepo();
-        // TODO: Seed block repo with saved user data?
-
         // Subscribe to trigger and squeezer events
         Trigger.onStateDown += TriggerPress;
         Squeeze.onStateDown += SqueezePress;
         Selector.onShapeChanged += SelectShape;
         Selector.onMaterialChanged += SelectMaterial;
         Selector.onEffectChanged += (isEffect) => _isEffect = isEffect;
+        SaveButton.onStateDown += SavePlayArea;
 
         _as = GetComponent<AudioSource>();
         _shape = StartShape;
         _material = StartMaterial;
+
+        _repo = new BlocksRepo();
     }
 
     void Update()
@@ -70,18 +74,7 @@ public class BlockPlacer : MonoBehaviour
     {
         if (_canPlace)
         {
-            var rot = GetClosestRotation();
-            var go = Instantiate(_shape, GetPositionFromCoords(_x, _y, _z), rot);
-            if (!_isEffect)
-            {
-                Renderer renderer = go.GetComponentInChildren<Renderer>();
-                renderer.material = _material;
-            }
-            _repo.PlaceBlock(
-                go, _shape.name,
-                _material ? _material.name : "",
-                _x, _y, _z,
-                rot.w, rot.x, rot.y, rot.z);
+            PlaceBlock();
         }
         else
         {
@@ -95,6 +88,28 @@ public class BlockPlacer : MonoBehaviour
         {
             _repo.RemoveBlock(coordStr);
         }
+    }
+    private void PlaceBlock()
+    {
+        var rot = GetClosestRotation();
+        var go = Instantiate(_shape, GetPositionFromCoords(_x, _y, _z), rot);
+        if (!_isEffect)
+        {
+            Renderer renderer = go.GetComponentInChildren<Renderer>();
+            renderer.material = _material;
+        }
+        _repo.PlaceBlock(
+            go, _shape.name,
+            _material ? _material.name : "",
+            _x, _y, _z,
+            rot.w, rot.x, rot.y, rot.z);
+    }
+    private void SavePlayArea(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    {
+        string playAreaString = _repo.RenderPlayArea();
+        PlayerPrefs.SetString("playArea", playAreaString);
+        Toast.GetComponent<TMP_Text>().text = "Play Area Saved!";
+        Toast.SetActive(true);
     }
     private void SelectShape(GameObject shape)
     {
