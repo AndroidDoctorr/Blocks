@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Valve.VR;
 
@@ -28,6 +29,7 @@ public class BlockPlacer : MonoBehaviour
     public GameObject GreenGhost;
     public GameObject RedGhost;
     public BlockSelector Selector;
+    public GameObject Toast;
 
     public GameObject StartShape;
     public Material StartMaterial;
@@ -47,6 +49,8 @@ public class BlockPlacer : MonoBehaviour
         _as = GetComponent<AudioSource>();
         _shape = StartShape;
         _material = StartMaterial;
+
+        _repo = new BlocksRepo();
     }
 
     void Update()
@@ -104,6 +108,8 @@ public class BlockPlacer : MonoBehaviour
     {
         string playAreaString = _repo.RenderPlayArea();
         PlayerPrefs.SetString("playArea", playAreaString);
+        Toast.GetComponent<TMP_Text>().text = "Play Area Saved!";
+        Toast.SetActive(true);
     }
     private void SelectShape(GameObject shape)
     {

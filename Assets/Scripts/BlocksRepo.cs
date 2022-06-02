@@ -91,7 +91,7 @@ namespace Assets.Scripts
 
         private static void PlaceBlockFromString(string blockString)
         {
-            string[] pieces = blockString.Split('_');
+            string[] pieces = blockString.Split('#');
             if (pieces.Length < 4)
             {
                 Debug.LogError($"Invalid block string: {blockString}");
@@ -104,6 +104,11 @@ namespace Assets.Scripts
             string rotationString = pieces[3];
 
             // Get shape and material from dictionaries in Selector
+            if (!BlockSelector.ShapesReference.ContainsKey(shapeString))
+            {
+                Debug.LogError($"Invalid shape string: {shapeString}");
+                return;
+            }
             GameObject shape = BlockSelector.ShapesReference[shapeString];
             Material material = null;
             if (BlockSelector.MaterialsReference.ContainsKey(materialString))
@@ -165,7 +170,7 @@ namespace Assets.Scripts
 
             public override string ToString()
             {
-                return $"{_shape}_{_material}_{_x},{_y},{_z}_{_wRot},{_xRot},{_yRot},{_zRot}";
+                return $"{_shape}#{_material}#{_x},{_y},{_z}#{_wRot},{_xRot},{_yRot},{_zRot}";
             }
         }
     }
