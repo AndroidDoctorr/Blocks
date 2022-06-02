@@ -45,6 +45,9 @@ public class BlockSelector : MonoBehaviour
     public GameObject RedGhost;
     public GameObject GreenGhost;
 
+    public static Dictionary<string, GameObject> ShapesReference = new Dictionary<string, GameObject>();
+    public static Dictionary<string, Material> MaterialsReference = new Dictionary<string, Material>();
+
     void Start()
     {
         RightMenuToggle.onStateDown += ToggleMenuRight;
@@ -55,6 +58,9 @@ public class BlockSelector : MonoBehaviour
         RightTrackPadCenter.onStateDown += SelectMenuMode;
 
         _as = GetComponent<AudioSource>();
+
+        PopulateShapesReference();
+        PopulateMaterialsReference();
     }
     void Update()
     {
@@ -264,5 +270,24 @@ public class BlockSelector : MonoBehaviour
     private void PlaySound()
     {
         if (_as != null) _as.PlayDelayed(0);
+    }
+
+    private void PopulateShapesReference()
+    {
+        foreach (GameObject shape in Shapes)
+        {
+            ShapesReference.Add(shape.name, shape);
+        }
+        foreach (GameObject effect in Effects)
+        {
+            ShapesReference.Add(effect.name, effect);
+        }
+    }
+    private void PopulateMaterialsReference()
+    {
+        foreach (Material material in Materials)
+        {
+            MaterialsReference.Add(material.name, material);
+        }
     }
 }

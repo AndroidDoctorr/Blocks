@@ -15,7 +15,6 @@ public class BlockPlacer : MonoBehaviour
     private int _x = 0;
     private int _y = 0;
     private int _z = 0;
-    private float _unit = 0.1f;
     private GameObject _shape;
     private Material _material;
     private bool _isEffect = false;
@@ -32,10 +31,13 @@ public class BlockPlacer : MonoBehaviour
     public GameObject StartShape;
     public Material StartMaterial;
 
+    public static float _unit = 0.1f;
+
     void Start()
     {
         _repo = new BlocksRepo();
-        // TODO: Seed block repo with saved user data?
+        string savedPlayArea = PlayerPrefs.GetString("playArea");
+        _repo.LoadPlayArea(savedPlayArea);
 
         // Subscribe to trigger and squeezer events
         Trigger.onStateDown += TriggerPress;
@@ -70,18 +72,7 @@ public class BlockPlacer : MonoBehaviour
     {
         if (_canPlace)
         {
-            var rot = GetClosestRotation();
-            var go = Instantiate(_shape, GetPositionFromCoords(_x, _y, _z), rot);
-            if (!_isEffect)
-            {
-                Renderer renderer = go.GetComponentInChildren<Renderer>();
-                renderer.material = _material;
-            }
-            _repo.PlaceBlock(
-                go, _shape.name,
-                _material ? _material.name : "",
-                _x, _y, _z,
-                rot.w, rot.x, rot.y, rot.z);
+            PlaceBlock();
         }
         else
         {
@@ -95,6 +86,21 @@ public class BlockPlacer : MonoBehaviour
         {
             _repo.RemoveBlock(coordStr);
         }
+    }
+    private void PlaceBlock()
+    {
+        var rot = GetClosestRotation();
+        var go = Instantiate(_shape, GetPositionFromCoords(_x, _y, _z), rot);
+        if (!_isEffect)
+        {
+            Renderer renderer = go.GetComponentInChildren<Renderer>();
+            renderer.material = _material;
+        }
+        _repo.PlaceBlock(
+            go, _shape.name,
+            _material ? _material.name : "",
+            _x, _y, _z,
+            rot.w, rot.x, rot.y, rot.z);
     }
     private void SelectShape(GameObject shape)
     {

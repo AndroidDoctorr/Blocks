@@ -9,7 +9,7 @@ namespace Assets.Scripts
 {
     public class BlocksRepo
     {
-        private readonly Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
+        private Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
 
         public bool HasOccupantAt(string coordString)
         {
@@ -46,6 +46,87 @@ namespace Assets.Scripts
             block.Go.transform.parent = null;
             GameObject.Destroy(block.Go);
             _blocks.Remove(coordString);
+        }
+
+        public void ClearPlayArea()
+        {
+            foreach (KeyValuePair<string, Block> kvp in _blocks)
+            {
+                string key = kvp.Key;
+                RemoveBlock(key);
+            }
+        }
+
+        public string RenderPlayArea()
+        {
+            List<string> blockStrings = new List<string>();
+            foreach (KeyValuePair<string, Block> kvp in _blocks)
+            {
+                // Render the block as a string and append to total
+                Block block = kvp.Value;
+                blockStrings.Add(block.ToString());
+            }
+            // Return the entire string encoded as Base 64
+            string playAreaString = string.Join(";", blockStrings.ToArray());
+            byte[] stringBytes = Encoding.UTF8.GetBytes(playAreaString);
+            string encodedString = Convert.ToBase64String(stringBytes);
+            return encodedString;
+        }
+
+        public void LoadPlayArea(string encodedString)
+        {
+            // Decode string into block strings
+            byte[] stringBytes = Convert.FromBase64String(encodedString);
+            string playAreaString = Encoding.UTF8.GetString(stringBytes);
+            string[] blockStrings = playAreaString.Split(';');
+            // Clear dictionary
+            _blocks = new Dictionary<string, Block>();
+            // Create blocks from strings
+            foreach (string blockString in blockStrings)
+            {
+                PlaceBlockFromString(blockString);
+            }
+        }
+
+        private void PlaceBlockFromString(string blockString)
+        {
+            string[] pieces = blockString.Split('_');
+            if (pieces.Length < 4)
+            {
+                Debug.LogError($"Invalid block string: {blockString}");
+                return;
+            }
+
+            string shapeString = pieces[0];
+            string materialString = pieces[1];
+            string coordString = pieces[2];
+            string rotationString = pieces[3];
+
+            // Get shape and material from dictionaries in Selector
+            GameObject shape = BlockSelector.ShapesReference[shapeString];
+            Material material = BlockSelector.MaterialsReference[materialString];
+            // Get coordinates and position
+            int[] coords = coordString.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
+            float unit = BlockPlacer._unit;
+            Vector3 position = new Vector3(coords[0] * unit, coords[1] * unit, coords[2] * unit);
+            // Get orientation
+            int[] rotations = rotationString.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
+            Quaternion rotation = new Quaternion(rotations[0], rotations[1], rotations[2], rotations[3]);
+
+            // Instantiate the game object and apply material if necessary
+            var go = GameObject.Instantiate(shape, position, rotation);
+            if (material != null)
+            {
+                Renderer renderer = go.GetComponentInChildren<Renderer>();
+                renderer.material = material;
+            }
+            
+            // Add to dictionary
+            _blocks.Add(coordString, new Block(go,
+                    blockString, materialString,
+                    coords[0], coords[1], coords[2],
+                    rotation.w, rotation.x, rotation.y, rotation.z
+                ));
         }
 
         private class Block
