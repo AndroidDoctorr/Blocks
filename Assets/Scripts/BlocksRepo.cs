@@ -113,8 +113,8 @@ namespace Assets.Scripts
             float unit = BlockPlacer._unit;
             Vector3 position = new Vector3(coords[0] * unit, coords[1] * unit, coords[2] * unit);
             // Get orientation
-            int[] rotations = rotationString.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
-            Quaternion rotation = new Quaternion(rotations[0], rotations[1], rotations[2], rotations[3]);
+            float[] rotations = rotationString.Split(',').Select(s => (float) Convert.ToDouble(s)).ToArray();
+            Quaternion rotation = new Quaternion(rotations[1], rotations[2], rotations[3], rotations[0]);
 
             // Instantiate the game object and apply material if necessary
             var go = GameObject.Instantiate(shape, position, rotation);

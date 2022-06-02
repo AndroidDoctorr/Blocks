@@ -103,8 +103,6 @@ public class BlockPlacer : MonoBehaviour
     private void SavePlayArea(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         string playAreaString = _repo.RenderPlayArea();
-        Debug.Log("SAVE PLAY AREA");
-        Debug.Log(playAreaString);
         PlayerPrefs.SetString("playArea", playAreaString);
     }
     private void SelectShape(GameObject shape)
