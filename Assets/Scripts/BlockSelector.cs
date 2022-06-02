@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -61,6 +62,9 @@ public class BlockSelector : MonoBehaviour
 
         PopulateShapesReference();
         PopulateMaterialsReference();
+
+        string savedPlayArea = PlayerPrefs.GetString("playArea");
+        BlocksRepo.LoadPlayArea(savedPlayArea);
     }
     void Update()
     {

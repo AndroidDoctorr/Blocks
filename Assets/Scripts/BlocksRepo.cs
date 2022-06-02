@@ -9,7 +9,7 @@ namespace Assets.Scripts
 {
     public class BlocksRepo
     {
-        private Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
+        private static Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
 
         public bool HasOccupantAt(string coordString)
         {
@@ -73,8 +73,9 @@ namespace Assets.Scripts
             return encodedString;
         }
 
-        public void LoadPlayArea(string encodedString)
+        public static void LoadPlayArea(string encodedString)
         {
+            if (string.IsNullOrEmpty(encodedString)) return;
             // Decode string into block strings
             byte[] stringBytes = Convert.FromBase64String(encodedString);
             string playAreaString = Encoding.UTF8.GetString(stringBytes);
@@ -88,7 +89,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void PlaceBlockFromString(string blockString)
+        private static void PlaceBlockFromString(string blockString)
         {
             string[] pieces = blockString.Split('_');
             if (pieces.Length < 4)
@@ -104,7 +105,9 @@ namespace Assets.Scripts
 
             // Get shape and material from dictionaries in Selector
             GameObject shape = BlockSelector.ShapesReference[shapeString];
-            Material material = BlockSelector.MaterialsReference[materialString];
+            Material material = null;
+            if (BlockSelector.MaterialsReference.ContainsKey(materialString))
+                material = BlockSelector.MaterialsReference[materialString];
             // Get coordinates and position
             int[] coords = coordString.Split(',').Select(s => Convert.ToInt32(s)).ToArray();
             float unit = BlockPlacer._unit;

@@ -2042,6 +2042,9 @@ MonoBehaviour:
   Squeeze:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
+  SaveButton:
+    actionPath: /actions/default/in/L Toggle Menu
+    needsReinit: 0
   Ghosts: {fileID: 678826311}
   GreenGhost: {fileID: 1499977972}
   RedGhost: {fileID: 911101897}
